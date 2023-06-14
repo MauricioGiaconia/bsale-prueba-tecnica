@@ -49,7 +49,6 @@ const boarding_pass = (sequelize) => {
     },
     flight_id: {
         type: DataTypes.INTEGER,
-        
         references: {
             model: 'flight',
             key: 'flight_id'
