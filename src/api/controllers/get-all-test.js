@@ -13,6 +13,17 @@ const getAllAirplanes = async (req, res) => {
         let occupiedSeats = [];
         let passengerWithoutSeat = [];
 
+        /**Arreglo con todos los campos que no quiero que tenga el json que se retornará 
+         * @type {Array} */
+        const fieldsToDelete = [
+          'boarding_passes',
+          '_previousDataValues',
+          '_changed',
+          'uniqno',
+          '_options',
+          'isNewRecord'
+        ]
+
         const dbResponse = await Flight.findByPk(1, {include: [
                                                             {
                                                                 model: Boarding_pass,
@@ -61,15 +72,12 @@ const getAllAirplanes = async (req, res) => {
                 
                
                 /**
-                 * Elimino del objeto a retornar, todas las keys innecesarias para la respuesta
+                 * Elimino del objeto a retornar todas las keys innecesarias para la respuesta
                  */
-                delete response.dataValues['boarding_passes'];
-                delete response['boarding_passes'];
-                delete response['_previousDataValues'];
-                delete response['_changed'];
-                delete response['uniqno'];
-                delete response['_options'];
-                delete response['isNewRecord'];
+                for (const field of fieldsToDelete){
+                  delete response.dataValues[field];
+                  delete response[field];
+                }
 
                 /**
                  * Los datos del vuelo estan en la key dataValues, por lo tanto, 
