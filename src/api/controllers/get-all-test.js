@@ -1,6 +1,7 @@
 const {Airplane, Flight, Seat, Seat_type, Purchase, Passenger, Boarding_pass} = require('../database/db.js');
 
 const {renameKeys} = require('../scripts/functions.js');
+const {setSeatToPassenger} = require('./seat-set-to-passenger.js');
 const getEmptySeats = require('./get-empty-seats.js');
 
 const getAllAirplanes = async (req, res) => {
@@ -62,12 +63,12 @@ const getAllAirplanes = async (req, res) => {
                 }
                 
                 /**
-                 * @type {Array} Almacenará todos los pasajeros sin asiento que sean menores de edad
+                 * @type {Array} Almacenará todos los asientos que se encuentren vacios
                  */
-                const underagePassengers = passengerWithoutSeat.filter((passenger) => passenger.age < 18);
-
-                console.log(underagePassengers);
-                
+            
+                const emptySeats = await getEmptySeats(1, occupiedSeats);
+               
+                console.log(emptySeats);
                 response = {...dbResponse ,...response};
                 
                
@@ -86,10 +87,13 @@ const getAllAirplanes = async (req, res) => {
                 response = {...response.dataValues, passengers : response.passenger}
 
                 response = renameKeys(response);
-
+           
+                response.passengers = setSeatToPassenger(response.passengers, emptySeats);
+              
                 return res.status(200).json({
                   code: 200,
-                  data: response
+                  data: response,
+                  emptySeats
                 });
               }
 
