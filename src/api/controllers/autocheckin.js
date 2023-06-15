@@ -7,6 +7,9 @@ const getEmptySeats = require('./get-empty-seats.js');
 const getAllAirplanes = async (req, res) => {
 
     try{
+
+      const {id} = req.params;
+
         /** Este arreglo será el retornado y en el se almacenará cada dato con sus keys en camelCase 
          * @type {Array}
          */
@@ -25,7 +28,7 @@ const getAllAirplanes = async (req, res) => {
           'isNewRecord'
         ]
 
-        const dbResponse = await Flight.findByPk(1, {include: [
+        const dbResponse = await Flight.findByPk(id, {include: [
                                                             {
                                                                 model: Boarding_pass,
                                                                 as: 'boarding_passes',
@@ -66,7 +69,7 @@ const getAllAirplanes = async (req, res) => {
                  * @type {Array} Almacenará todos los asientos que se encuentren vacios
                  */
             
-                const emptySeats = await getEmptySeats(1, occupiedSeats);
+                const emptySeats = await getEmptySeats(id, occupiedSeats);
                
                 
                 response = {...dbResponse ,...response};
@@ -90,7 +93,7 @@ const getAllAirplanes = async (req, res) => {
              
                 response.passengers = setSeatToPassenger(response.passengers, emptySeats);
              
-                response.passengers.sort((a, b) => a.seatId - b.seatId)
+                response.passengers.sort((a, b) => a.seatId - b.seatId);
               
                 return res.status(200).json({
                   code: 200,
