@@ -1,10 +1,13 @@
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
-const sequelize = new Sequelize('airline', 'bsale_test', 'bsale_test', {
-    host: 'mdb-test.c6vunyturrl6.us-west-1.rds.amazonaws.com',
-    dialect: 'mysql',
+const {DB_USER, DB_PASSWORD, DB_NAME, DB_HOST, DB_MOTOR} = process.env;
+
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+    host: DB_HOST,
+    dialect: DB_MOTOR.toLowerCase(),
     /**Reconexión a la base de datos, tendrá un máximo de 5 intentos de reconexión con un delay de 1000 milisegunds (1 segundo) entre cada intento
     */
     retry: {

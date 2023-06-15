@@ -13,7 +13,15 @@ npm (versión X.X.X)
 
 3 - Instala las dependencias del proyecto: npm install.
 
-4 - Inicia el servidor: npm start.
+4 - Crea un archivo .env en la raíz del proyecto y configura las variables de entorno necesarias. Las variables deben llamarse:
+* PORT -> Puerto donde se iniciará el servidor 
+* DB_USER -> Usuario de la database
+* DB_PASSWORD -> Contraseña de la data base
+* DB_NAME -> Nombre de la database
+* DB_HOST -> Host de la database
+* DB_MOTOR -> Motor de la database (ejemplo: MySQL)
+
+5 - Inicia el servidor: npm start.
 
 ## **Uso**
 La API se ejecutará en http://localhost:3000 de forma predeterminada. Puedes enviar una solicitud GET al siguiente endpoint para obtener la simulación del check-in para un vuelo específico:
