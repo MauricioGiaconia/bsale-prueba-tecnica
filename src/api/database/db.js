@@ -19,7 +19,8 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
         freezeTableName: true
     },
     /** Desactivo la creación de tablas por defecto */
-    sync: false
+    sync: false,
+    logging: false
   });
 
 const basename = path.basename(__filename);
