@@ -542,7 +542,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_getEmptySeats.js.html">controllers/getEmptySeats.js</a>, <a href="controllers_getEmptySeats.js.html#line10">line 10</a>
+        <a href="controllers_get-empty-seats.js.html">controllers/get-empty-seats.js</a>, <a href="controllers_get-empty-seats.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -572,6 +572,161 @@
         
 <div class="param-desc">
     Array de objeto con la data de los asientos vacios ordenados de forma ASC
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="orderSeats"><span class="type-signature"></span>orderSeats<span class="signature">(emptySeats)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>emptySeats</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Lista de todos los asientos vacios</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_set-seat-to-passenger.js.html">controllers/set-seat-to-passenger.js</a>, <a href="controllers_set-seat-to-passenger.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Array con los asientos vacios ordenados por sus columnas y filas
 </div>
 
 
@@ -738,6 +893,188 @@
     <dd>
         
 <span class="param-type">json</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setSeatToPassenger"><span class="type-signature"></span>setSeatToPassenger<span class="signature">(passengers, emptySeats)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Funcion recursiva que asigna asientos a pasajeros que no tengan uno asignado.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>passengers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;obj></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Lista de pasajeros a la que se le quiere asignar asientos</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>emptySeats</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;obj></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Lista de asientos disponibles</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_set-seat-to-passenger.js.html">controllers/set-seat-to-passenger.js</a>, <a href="controllers_set-seat-to-passenger.js.html#line43">line 43</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Lista con todos los pasajeros del vuelo, cada uno con su respectivo asiento respetando sus compañeros
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
 
 
     </dd>
@@ -924,13 +1261,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#define">define</a></li><li><a href="global.html#entries">entries</a></li><li><a href="global.html#getEmptySeats">getEmptySeats</a></li><li><a href="global.html#modelDefiners">modelDefiners</a></li><li><a href="global.html#renameKeys">renameKeys</a></li><li><a href="global.html#retry">retry</a></li><li><a href="global.html#snakeToCamelCase">snakeToCamelCase</a></li><li><a href="global.html#sync">sync</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#define">define</a></li><li><a href="global.html#entries">entries</a></li><li><a href="global.html#getEmptySeats">getEmptySeats</a></li><li><a href="global.html#modelDefiners">modelDefiners</a></li><li><a href="global.html#orderSeats">orderSeats</a></li><li><a href="global.html#renameKeys">renameKeys</a></li><li><a href="global.html#retry">retry</a></li><li><a href="global.html#setSeatToPassenger">setSeatToPassenger</a></li><li><a href="global.html#snakeToCamelCase">snakeToCamelCase</a></li><li><a href="global.html#sync">sync</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Jun 14 2023 00:15:20 GMT-0300 (hora estándar de Argentina)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Jun 15 2023 04:04:08 GMT-0300 (hora estándar de Argentina)
 </footer>
 
 <script> prettyPrint(); </script>
