@@ -48,12 +48,14 @@ const setSeatToPassenger = (passengers, emptySeats) => {
 
     let updatedPassengers = [];
 
-    /**
-     * @type {Integer} Edad minima de un adulto
+    /** Edad minima de un adulto
+     * @type {Integer} 
      */
     const adult = 18;
 
-    /**@type {obj} Objeto que contiene las columnas que esta al lado de la otra */
+    /**Objeto que contiene las columnas que esta al lado de la otra
+     * @type {obj} 
+     */
     const seatsTogether = {
         'A': 'B',
         'B': 'C',
@@ -69,10 +71,10 @@ const setSeatToPassenger = (passengers, emptySeats) => {
     
     emptySeats = orderSeats(emptySeats);
 
-    /**
-     * @type {obj} Busco al primer pasajero menor de edad que se encuentre en el array de pasajeros
+    /** Busco al primer pasajero menor de edad que se encuentre en el array de pasajeros
+     * @type {obj} 
      */
-    const underagePassenger = passengers.find(passenger => (passenger.age < adult));
+    const underagePassenger = passengers.find(passenger => passenger.age < adult);
 
     let passengersGroup = [];
 
@@ -85,10 +87,13 @@ const setSeatToPassenger = (passengers, emptySeats) => {
         passengersGroup = passengers.filter((partner) => partner.purchaseId === passengers[0].purchaseId);
     }
 
+    /**Obtengo el pasajero menor de edad de la lista de pasajeros agrupados por su purchaseId */
     let underage = passengersGroup.find(passenger => passenger.age < adult);
 
     if (underage) {
 
+
+        /** Obtengo el primer adulto que acompañará al menor de edad */
         let adultPartner = passengersGroup.find(passenger => passenger.age >= adult);
 
         for (let i = 0; i < emptySeats.length; i++) {
@@ -102,6 +107,9 @@ const setSeatToPassenger = (passengers, emptySeats) => {
                         underage.seatId = emptySeats[i]['seat_id'];
                         adultPartner.seatId = emptySeats[i + 1]['seat_id'];
                         updatedPassengers.push(...[underage, adultPartner]);
+                        /**
+                         * Elimino los dos asientos asignados de la lista de asientos vacios
+                         */
                         emptySeats.splice(i, 2);
                         break;
                     } else{
@@ -114,20 +122,31 @@ const setSeatToPassenger = (passengers, emptySeats) => {
 
         if (passengersGroup.length > 0) {
         
+            /** Obtengo el primer pasajero de su grupo, si ya tiene un asiento asignado entonces lo empujo a la lista de pasajeros actualizados */
             let assignedPassenger = passengersGroup.shift();
             
             if (assignedPassenger.seatId !== null){
                 updatedPassengers.push(assignedPassenger);
             } else{
 
+                /** Contador para ver cada asiento en el array "emptySeats"
+                 * @type {Integer} 
+                 */
+                let count = 0;
+                /**En cambio, mientras no tenga un asiento asignado, le busco uno que coincida con el tipo de asiento que compró */
                 while (assignedPassenger.seatId === null){
-                    let emptySeat = emptySeats.shift();
+                    
 
-                    if (assignedPassenger.seatTypeId === emptySeat['seat_type_id']){
-                        assignedPassenger.seatId = emptySeat['seat_id'];
-                        updatedPassengers.push(assignedPassenger)
+                    /** Si coincido con el tipo de asiento que compró el cliente, entonces se lo asigno */
+                    if (assignedPassenger.seatTypeId === emptySeats[count]['seat_type_id']){
+                        assignedPassenger.seatId = emptySeats[count]['seat_id'];
+                        updatedPassengers.push(assignedPassenger);
+                        /**
+                         * Elimino el asiento, que ahora está ocupado, de la lista de asientos vacios
+                         */
+                        emptySeats.splice(count, 1);
                     } else{
-                        emptySeats.push(emptySeat);
+                        count++;
                     }
                 }
                 
@@ -135,6 +154,9 @@ const setSeatToPassenger = (passengers, emptySeats) => {
         }
     }
 
+    /**
+     * Todos los pasajeros que hayan sido actualizados y ahora tengan un asiento asignado, serán eliminados de la lista de pasajeros para poder llamar a la funcion de manera recursiva
+     */
     passengers = passengers.filter((passenger) => { return !updatedPassengers.some((updatedPassenger) => passenger.passengerId === updatedPassenger.passengerId) });
 
     return updatedPassengers.concat(setSeatToPassenger([...passengers], [...emptySeats]));
