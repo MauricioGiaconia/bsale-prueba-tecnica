@@ -105,7 +105,7 @@ const getAllAirplanes = async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(400).json({ code: 400, errors:  error.message })
+    return res.status(400).json({ code: 400, errors:  "could not connect to db" })
   }
 
 }
