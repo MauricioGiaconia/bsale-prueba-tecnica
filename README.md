@@ -3,8 +3,8 @@
 Esta API permite realizar la simulación de check-in automático para los pasajeros de Andes Airlines. Conecta con una base de datos MySQL para obtener los datos necesarios y asignar los asientos correspondientes a las tarjetas de embarque.
 
 Requisitos previos
-Node.js (versión X.X.X)
-npm (versión X.X.X)
+* Node.js (versión X.X.X)
+* npm (versión X.X.X)
 
 ## **Instalación**
 1 - Clona el repositorio de GitHub: https://github.com/MauricioGiaconia/bsale-prueba-tecnica
