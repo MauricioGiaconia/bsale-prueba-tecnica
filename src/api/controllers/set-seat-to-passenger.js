@@ -56,8 +56,6 @@ const setSeatToPassenger = (passengers, emptySeats) => {
     /**Objeto que contiene las columnas que esta al lado de la otra
      * @type {obj} 
      */
-
-    //NOTA: Tecnica B y C son compañeros segun los dibujos en el pdf pero en las preguntas frecuentes se aclara de que NO lo son
     const seatsTogether = {
         'A': 'B',
         'B': 'C',
