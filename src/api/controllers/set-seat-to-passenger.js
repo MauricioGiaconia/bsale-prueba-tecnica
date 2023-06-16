@@ -48,7 +48,7 @@ const setSeatToPassenger = (passengers, emptySeats) => {
 
     let updatedPassengers = [];
 
-    /** Edad minima de un adulto
+    /** Edad minima para que un pasajero sea considerado adulto
      * @type {Integer} 
      */
     const adult = 18;
