@@ -88,7 +88,7 @@ const getAllAirplanes = async (req, res) => {
       response = { ...response.dataValues, passengers: response.passenger }
 
       response = renameKeys(response);
-
+      
       response.passengers = setSeatToPassenger(response.passengers, emptySeats);
 
       response.passengers.sort((a, b) => a.seatId - b.seatId);
