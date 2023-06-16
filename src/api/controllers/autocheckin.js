@@ -70,8 +70,10 @@ const getAllAirplanes = async (req, res) => {
        * @type {Array} 
        */
       const emptySeats = await getEmptySeats(dbResponse.airplane_id, occupiedSeats);
+      
 
       response = { ...dbResponse, ...response };
+      
 
       /**
        * Elimino del objeto a retornar todas las keys innecesarias para la respuesta
@@ -80,6 +82,8 @@ const getAllAirplanes = async (req, res) => {
         delete response.dataValues[field];
         delete response[field];
       }
+
+      
 
       /**
        * Los datos del vuelo estan en la key dataValues, por lo tanto, 
@@ -105,7 +109,7 @@ const getAllAirplanes = async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(400).json({ code: 400, errors:  "could not connect to db" })
+    return res.status(400).json({ code: 400, errors:  error.message })
   }
 
 }

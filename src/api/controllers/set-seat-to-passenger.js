@@ -85,22 +85,78 @@ const setSeatToPassenger = (passengers, emptySeats) => {
     }
 
     /**Obtengo el pasajero menor de edad de la lista de pasajeros agrupados por su purchaseId */
-    let underage = passengersGroup.find(passenger => passenger.age < adult);
+    let underagesGroup = passengersGroup.filter(passenger => passenger.age < adult);
 
-    if (underage) {
+    if (underagesGroup.length > 0) {
 
 
         /** Obtengo el primer adulto que acompañará al menor de edad */
-        let adultPartner = passengersGroup.find(passenger => passenger.age >= adult);
+        let adultsGroup = passengersGroup.filter(passenger => passenger.age >= adult && underagesGroup[0].seatTypeId === passenger.seatTypeId);
+
+        let adultPartner = {};
 
         for (let i = 0; i < emptySeats.length; i++) {
-            if (emptySeats[i + 1]) {
+
+            if (underagesGroup.length > adultsGroup.length){
+                
+                let firstUnderage = underagesGroup.shift();
+                let lastUnderage = underagesGroup.pop();
+                adultPartner = adultsGroup.shift();
+               
+                if (emptySeats[i + 1] && emptySeats[i + 2]) {
+                    
+                    /**Utilizando la constante 'seatsTogether' compruebo que dos columnas sean compañeras y a su vez compruebo que estan paradas sobre la misma fila  */
+                    if ((seatsTogether[emptySeats[i]['seat_column']] === emptySeats[i + 1]['seat_column']) && (emptySeats[i]['seat_row'] === emptySeats[i + 1]['seat_row']) &&
+                        (seatsTogether[emptySeats[i+1]['seat_column']] === emptySeats[i + 2]['seat_column']) && (emptySeats[i + 1]['seat_row'] === emptySeats[i + 2]['seat_row'])) {
+                        /**
+                         * Compruebo que el tipo de asiento sea el que solicitó el cliente en su compra
+                         */
+                      
+                        if (emptySeats[i]['seat_type_id'] === firstUnderage.seatTypeId && emptySeats[i+1]['seat_type_id'] === adultPartner.seatTypeId && emptySeats[i+2]['seat_type_id'] === lastUnderage.seatTypeId){
+                            firstUnderage.seatId = emptySeats[i]['seat_id'];
+                            adultPartner.seatId = emptySeats[i + 1]['seat_id'];
+                            lastUnderage.seatId = emptySeats[i + 2]['seat_id'];
+                            updatedPassengers.push(...[firstUnderage, adultPartner, lastUnderage]);
+
+                            /**
+                             * Elimino los dos asientos asignados de la lista de asientos vacios
+                             */
+                            emptySeats.splice(i, 3);
+                            break;
+                        } else{
+                           
+                            underagesGroup.push(firstUnderage);
+                            underagesGroup.push(lastUnderage);
+                            adultsGroup.push(adultPartner);
+                            continue;
+                        }
+                    } else{
+                           
+                        underagesGroup.push(firstUnderage);
+                        underagesGroup.push(lastUnderage);
+                        adultsGroup.push(adultPartner);
+                        continue;
+                    }
+                } else{
+                    
+                    underagesGroup.push(underage);
+                    adultsGroup.push(adultPartner);
+                    continue;
+                } 
+                
+            } else if (emptySeats[i + 1]) {
+
+                let underage = underagesGroup.shift();
+                adultPartner = adultsGroup.shift();
+            
                 /**Utilizando la constante 'seatsTogether' compruebo que dos columnas sean compañeras y a su vez compruebo que estan paradas sobre la misma fila  */
                 if ((seatsTogether[emptySeats[i]['seat_column']] === emptySeats[i + 1]['seat_column']) && (emptySeats[i]['seat_row'] === emptySeats[i + 1]['seat_row'])) {
                     /**
                      * Compruebo que el tipo de asiento sea el que solicitó el cliente en su compra
                      */
                     if (emptySeats[i]['seat_type_id'] === underage.seatTypeId && emptySeats[i+1]['seat_type_id'] === adultPartner.seatTypeId){
+
+                       
                         underage.seatId = emptySeats[i]['seat_id'];
                         adultPartner.seatId = emptySeats[i + 1]['seat_id'];
                         updatedPassengers.push(...[underage, adultPartner]);
@@ -110,12 +166,26 @@ const setSeatToPassenger = (passengers, emptySeats) => {
                         emptySeats.splice(i, 2);
                         break;
                     } else{
+                  
+                        underagesGroup.push(underage);
+                        adultsGroup.push(adultPartner);
                         continue;
                     }
+                } else{
+                  
+                    underagesGroup.push(underage);
+                    adultsGroup.push(adultPartner);
+                    continue;
                 }
             }
+            
         }
-    } else if (passengersGroup) {
+    }
+    
+    /** Verifico que en el grupo actual que se le hayan asignado asientos a todos los pasajeros del array */
+    passengersGroup = passengersGroup.filter((passenger) => { return !updatedPassengers.some((updatedPassenger) => passenger.passengerId === updatedPassenger.passengerId) });
+
+    if (passengersGroup) {
 
         if (passengersGroup.length > 0) {
         
