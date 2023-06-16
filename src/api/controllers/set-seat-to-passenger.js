@@ -60,7 +60,9 @@ const setSeatToPassenger = (passengers, emptySeats) => {
     //NOTA: Tecnica B y C son compañeros segun los dibujos en el pdf pero en las preguntas frecuentes se aclara de que NO lo son
     const seatsTogether = {
         'A': 'B',
+        'B': 'C',
         'D': 'E',
+        'E': 'F',
         'F': 'G',
         'H': 'I'
     };
