@@ -92,7 +92,7 @@ const getAllAirplanes = async (req, res) => {
       response = { ...response.dataValues, passengers: response.passenger }
 
       response = renameKeys(response);
-
+  
       response.passengers = setSeatToPassenger(response.passengers, emptySeats);
 
       response.passengers.sort((a, b) => a.seatId - b.seatId);
@@ -111,7 +111,7 @@ const getAllAirplanes = async (req, res) => {
   } catch (error) {
     return res.status(400).json({ 
                                   code: 400, 
-                                  errors:  "could not connect to db" 
+                                  errors:  'could not connect to db'
                                 });
   }
 

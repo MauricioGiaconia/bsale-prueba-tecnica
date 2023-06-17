@@ -126,47 +126,48 @@ const setSeatToPassenger = (passengers, emptySeats) => {
                 let firstUnderage = underagesGroup.shift();
                 let lastUnderage = underagesGroup.pop();
                 adultPartner = adultsGroup.shift();
-               
-                if (emptySeats[i + 1] && emptySeats[i + 2]) {
+                
+                if (adultPartner){
+                    if (emptySeats[i + 1] && emptySeats[i + 2]) {
+                        
                     
-                 
-                    if (areSeatsTogether(emptySeats, i) && areSeatsTogether(emptySeats, i+1)) {
-                        /**
-                         * Compruebo que el tipo de asiento sea el que solicitó el cliente en su compra
-                         */
-                      
-                        if (emptySeats[i]['seat_type_id'] === firstUnderage.seatTypeId && emptySeats[i+1]['seat_type_id'] === adultPartner.seatTypeId && emptySeats[i+2]['seat_type_id'] === lastUnderage.seatTypeId){
-                            firstUnderage.seatId = emptySeats[i]['seat_id'];
-                            adultPartner.seatId = emptySeats[i + 1]['seat_id'];
-                            lastUnderage.seatId = emptySeats[i + 2]['seat_id'];
-                            updatedPassengers.push(...[firstUnderage, adultPartner, lastUnderage]);
-
+                        if (areSeatsTogether(emptySeats, i) && areSeatsTogether(emptySeats, i+1)) {
                             /**
-                             * Elimino los dos asientos asignados de la lista de asientos vacios
+                             * Compruebo que el tipo de asiento sea el que solicitó el cliente en su compra
                              */
-                            emptySeats.splice(i, 3);
-                            break;
+                        
+                            if (emptySeats[i]['seat_type_id'] === firstUnderage.seatTypeId && emptySeats[i+1]['seat_type_id'] === adultPartner.seatTypeId && emptySeats[i+2]['seat_type_id'] === lastUnderage.seatTypeId){
+                                firstUnderage.seatId = emptySeats[i]['seat_id'];
+                                adultPartner.seatId = emptySeats[i + 1]['seat_id'];
+                                lastUnderage.seatId = emptySeats[i + 2]['seat_id'];
+                                updatedPassengers.push(...[firstUnderage, adultPartner, lastUnderage]);
+
+                                /**
+                                 * Elimino los dos asientos asignados de la lista de asientos vacios
+                                 */
+                                emptySeats.splice(i, 3);
+                                break;
+                            } else{
+                            
+                                underagesGroup.push(firstUnderage);
+                                underagesGroup.push(lastUnderage);
+                                adultsGroup.push(adultPartner);
+                                continue;
+                            }
                         } else{
-                           
+                            
                             underagesGroup.push(firstUnderage);
                             underagesGroup.push(lastUnderage);
                             adultsGroup.push(adultPartner);
                             continue;
                         }
                     } else{
-                           
-                        underagesGroup.push(firstUnderage);
-                        underagesGroup.push(lastUnderage);
+                        
+                        underagesGroup.push(underage);
                         adultsGroup.push(adultPartner);
                         continue;
-                    }
-                } else{
-                    
-                    underagesGroup.push(underage);
-                    adultsGroup.push(adultPartner);
-                    continue;
-                } 
-
+                    } 
+                }
             } else if (emptySeats[i + 1]) {
 
                 let underage = underagesGroup.shift();
