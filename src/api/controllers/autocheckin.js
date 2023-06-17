@@ -93,9 +93,6 @@ const getAllAirplanes = async (req, res) => {
 
       response = renameKeys(response);
 
-      response.passengers.push({"passengerId":820,"dni":"702149417","name":"Luffy","age":1,"country":"Chile","boardingPassId":482,"purchaseId":1090,"seatTypeId":3,"seatId":null})
-      response.passengers.push({"passengerId":821,"dni":"702149417","name":"Sanji","age":1,"country":"Chile","boardingPassId":483,"purchaseId":1090,"seatTypeId":3,"seatId":null})
-      response.passengers.push({"passengerId":822,"dni":"702149417","name":"Sol","age":23,"country":"Chile","boardingPassId":484,"purchaseId":1090,"seatTypeId":3,"seatId":null})
       response.passengers = setSeatToPassenger(response.passengers, emptySeats);
 
       response.passengers.sort((a, b) => a.seatId - b.seatId);
