@@ -35,6 +35,42 @@ const orderSeats = (emptySeats) => {
 }
 
 /**
+ * Funcion que comprueba si un asiento, según el indice, tiene un asiento adyacente disponible o no 
+ * @param {Array} emptySeats Lista de asientos disponibles
+ * @param {Integer} index indice donde comprobaré si tiene un asiento adyacente o no
+ * @returns {boolean} En caso de que el indice enviado tenga compañero retorna true, caso contrario retorna false
+ */
+
+const areSeatsTogether = (emptySeats, index) => {
+    
+    /**Objeto que contiene las columnas que esta al lado de la otra
+     * @type {obj} 
+     */
+    
+    const seatsTogether = {
+        'A': 'B',
+        'B': 'C',
+        'D': 'E',
+        'E': 'F',
+        'F': 'G',
+        'H': 'I'
+    };
+
+    /**Utilizando la constante 'seatsTogether' compruebo que dos columnas sean compañeras y a su vez compruebo que estan paradas sobre la misma fila  */
+    return (seatsTogether[emptySeats[index]['seat_column']] === emptySeats[index + 1]['seat_column'] && emptySeats[index]['seat_row'] === emptySeats[index + 1]['seat_row']);
+}
+
+/**
+ * Funcion para obtener los pasajeros agrupados por su purchaseId
+ * @param {Array} passengers Lista de pasajeros
+ * @param {Integer} purchaseId ID de la venta a buscar
+ * @returns {Array} Arreglo con todos los pasajeros con el mismo ID de venta
+ */
+const getPassengersByPurchaseId = (passengers, purchaseId) => {
+    return passengers.filter((passenger) => passenger.purchaseId === purchaseId);
+}
+
+/**
  * Funcion recursiva que asigna asientos a pasajeros que no tengan uno asignado.
  * @param {Array<obj>} passengers Lista de pasajeros a la que se le quiere asignar asientos
  * @param {Array<obj>} emptySeats Lista de asientos disponibles
@@ -53,19 +89,7 @@ const setSeatToPassenger = (passengers, emptySeats) => {
      */
     const adult = 18;
 
-    /**Objeto que contiene las columnas que esta al lado de la otra
-     * @type {obj} 
-     */
-    const seatsTogether = {
-        'A': 'B',
-        'B': 'C',
-        'D': 'E',
-        'E': 'F',
-        'F': 'G',
-        'H': 'I'
-    };
-
-    
+    //Obtengo los asientos vacios
     emptySeats = orderSeats(emptySeats);
 
     /** Busco al primer pasajero menor de edad que se encuentre en el array de pasajeros
@@ -79,9 +103,9 @@ const setSeatToPassenger = (passengers, emptySeats) => {
      * Si existe un pasajero menor de edad entonces agrupo todos los compañeros de esa persona segun el id de venta, si no existe, agrupo por id de venta del primer pasajero disponible
      */
     if (underagePassenger) {
-        passengersGroup = passengers.filter((partner) => partner.purchaseId === underagePassenger.purchaseId);
+        passengersGroup = getPassengersByPurchaseId(passengers, underagePassenger.purchaseId);
     } else {
-        passengersGroup = passengers.filter((partner) => partner.purchaseId === passengers[0].purchaseId);
+        passengersGroup = getPassengersByPurchaseId(passengers, passengers[0].purchaseId);
     }
 
     /**Obtengo el pasajero menor de edad de la lista de pasajeros agrupados por su purchaseId */
@@ -105,9 +129,8 @@ const setSeatToPassenger = (passengers, emptySeats) => {
                
                 if (emptySeats[i + 1] && emptySeats[i + 2]) {
                     
-                    /**Utilizando la constante 'seatsTogether' compruebo que dos columnas sean compañeras y a su vez compruebo que estan paradas sobre la misma fila  */
-                    if ((seatsTogether[emptySeats[i]['seat_column']] === emptySeats[i + 1]['seat_column']) && (emptySeats[i]['seat_row'] === emptySeats[i + 1]['seat_row']) &&
-                        (seatsTogether[emptySeats[i+1]['seat_column']] === emptySeats[i + 2]['seat_column']) && (emptySeats[i + 1]['seat_row'] === emptySeats[i + 2]['seat_row'])) {
+                 
+                    if (areSeatsTogether(emptySeats, i) && areSeatsTogether(emptySeats, i+1)) {
                         /**
                          * Compruebo que el tipo de asiento sea el que solicitó el cliente en su compra
                          */
@@ -143,14 +166,14 @@ const setSeatToPassenger = (passengers, emptySeats) => {
                     adultsGroup.push(adultPartner);
                     continue;
                 } 
-                
+
             } else if (emptySeats[i + 1]) {
 
                 let underage = underagesGroup.shift();
                 adultPartner = adultsGroup.shift();
             
                 /**Utilizando la constante 'seatsTogether' compruebo que dos columnas sean compañeras y a su vez compruebo que estan paradas sobre la misma fila  */
-                if ((seatsTogether[emptySeats[i]['seat_column']] === emptySeats[i + 1]['seat_column']) && (emptySeats[i]['seat_row'] === emptySeats[i + 1]['seat_row'])) {
+                if (areSeatsTogether(emptySeats, i)) {
                     /**
                      * Compruebo que el tipo de asiento sea el que solicitó el cliente en su compra
                      */
@@ -202,8 +225,6 @@ const setSeatToPassenger = (passengers, emptySeats) => {
                 let count = 0;
                 /**En cambio, mientras no tenga un asiento asignado, le busco uno que coincida con el tipo de asiento que compró */
                 while (assignedPassenger.seatId === null){
-                    
-
                     /** Si coincido con el tipo de asiento que compró el cliente, entonces se lo asigno */
                     if (assignedPassenger.seatTypeId === emptySeats[count]['seat_type_id']){
                         assignedPassenger.seatId = emptySeats[count]['seat_id'];
